@@ -5,21 +5,10 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Add Task</div>
-
-                <div class="card-body">
-                    <form action="{{ url('tasks') }}" method="POST">
-                        {{ csrf_field() }}
-                        <input type="text" name="description" />
-                        <input type="submit" />
-                    </form>
+                <div class="card-header">
+                    Dashboard
+                    <a href="{{ url('tasks/create') }}">Add New Task</a>
                 </div>
-            </div>
-            
-            
-            <br>
-            <div class="card">
-                <div class="card-header">Dashboard</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -27,14 +16,14 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
-                    Pershendetje, {{  $user }}
-                    <table>
+                    <table class="table table-responsive">
                         <tr>
                             <td>ID</td>
                             <td>User</td>
                             <td>Description</td>
                             <td>Completed</td>
+                            <td>Edit</td>
+                            <td>Delete</td>
                         </tr>
                         @foreach($tasks as $task)
                         <tr>
@@ -42,6 +31,14 @@
                             <td>{{ $task->user_id }}</td>
                             <td>{{ $task->description }}</td>
                             <td>{{ $task->completed }}</td>
+                            <td><a href='{{ url("tasks/$task->id/edit") }}'>Edit</a></td>
+                            <td>
+                                <form action="{{ url("tasks/$task->id") }}" method="POST">
+                                    {{ method_field('DELETE') }}
+                                    {{ csrf_field() }}
+                                    <input type="submit" value="DELETE">
+                                </form>
+                            </td>
                         </tr>
                         @endforeach
                     </table>
